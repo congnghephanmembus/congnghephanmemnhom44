@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách tuyến xe</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+</head>
+<body>
+
+<div class="container mt-4">
+
+    <h2 class="mb-3">Danh sách tuyến xe</h2>
+
+    <a href="/" class="btn btn-secondary mb-3">Trang chủ</a>
+    <a href="/tuyen/them" class="btn btn-success mb-3">+ Thêm tuyến mới</a>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Mã tuyến</th>
+                <th>Tên tuyến</th>
+                <th>Điểm đầu</th>
+                <th>Điểm cuối</th>
+                <th>Cự ly km</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="t : ${danhSach}">
+                <td th:text="${t.maTuyen}"></td>
+                <td th:text="${t.tenTuyen}"></td>
+                <td th:text="${t.diemDau}"></td>
+                <td th:text="${t.diemCuoi}"></td>
+                <td th:text="${t.cuLy}"></td>
+                <td th:text="${t.trangThai}"></td>
+
+                <td>
+                    <a th:href="@{/tuyen/sua/{ma}(ma=${t.maTuyen})}"
+                       class="btn btn-warning btn-sm">
+                        Sửa
+                    </a>
+
+                    <a th:href="@{/tuyen/xoa/{ma}(ma=${t.maTuyen})}"
+                       class="btn btn-danger btn-sm"
+                       onclick="return confirm('Xác nhận xoá tuyến này?')">
+                        Xoá
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

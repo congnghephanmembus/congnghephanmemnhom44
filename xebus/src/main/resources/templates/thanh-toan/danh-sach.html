@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách thanh toán</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+</head>
+<body>
+
+<div class="container mt-4">
+
+    <h2>Danh sách thanh toán</h2>
+
+    <a href="/" class="btn btn-secondary mb-3">Trang chủ</a>
+    <a href="/thanh-toan/them" class="btn btn-success mb-3">+ Thêm thanh toán</a>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+        <tr>
+            <th>Mã thanh toán</th>
+            <th>Mã vé</th>
+            <th>Ngày thanh toán</th>
+            <th>Phương thức</th>
+            <th>Số tiền</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="tt : ${danhSach}">
+            <td th:text="${tt.maThanhToan}"></td>
+            <td th:text="${tt.maVe}"></td>
+            <td th:text="${tt.ngayThanhToan}"></td>
+            <td th:text="${tt.phuongThuc}"></td>
+            <td th:text="${tt.soTien}"></td>
+
+            <td>
+                <a th:href="@{/thanh-toan/sua/{ma}(ma=${tt.maThanhToan})}"
+                   class="btn btn-warning btn-sm">
+                    Sửa
+                </a>
+
+                <a th:href="@{/thanh-toan/xoa/{ma}(ma=${tt.maThanhToan})}"
+                   class="btn btn-danger btn-sm"
+                   onclick="return confirm('Xác nhận xoá thanh toán này?')">
+                    Xoá
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>
