@@ -17,13 +17,13 @@ public class NhanVienController {
     @GetMapping
     public String danhSach(Model model) {
         model.addAttribute("danhSach", nhanVienService.layTatCa());
-        return "nhanvien/danh-sach";
+        return "nhan-vien/danh-sach";
     }
 
     @GetMapping("/them")
     public String formThem(Model model) {
         model.addAttribute("nhanVien", new NhanVien());
-        return "nhanvien/form";
+        return "nhan-vien/form";
     }
 
     @PostMapping("/luu")
@@ -36,7 +36,7 @@ public class NhanVienController {
     public String formSua(@PathVariable String ma, Model model) {
         NhanVien nhanVien = nhanVienService.timTheoMa(ma);
         model.addAttribute("nhanVien", nhanVien);
-        return "nhanvien/form";
+        return "nhan-vien/form";
     }
 
     @GetMapping("/xoa/{ma}")

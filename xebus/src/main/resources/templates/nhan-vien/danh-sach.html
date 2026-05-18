@@ -14,37 +14,44 @@
     <h2 class="mb-3">Danh sách nhân viên</h2>
 
     <a href="/" class="btn btn-secondary mb-3">Trang chủ</a>
-    <a href="/nhanvien/them" class="btn btn-success mb-3">+ Thêm nhân viên mới</a>
+
+    <a href="/nhanvien/them"
+       class="btn btn-success mb-3">
+        + Thêm nhân viên mới
+    </a>
 
     <table class="table table-bordered table-hover">
+
         <thead class="table-dark">
         <tr>
             <th>Mã NV</th>
+            <th>CCCD</th>
             <th>Họ tên</th>
             <th>Ngày sinh</th>
             <th>Giới tính</th>
-            <th>SĐT</th>
-            <th>Địa chỉ</th>
+            <th>Số điện thoại</th>
+            <th>Email</th>
             <th>Chức vụ</th>
             <th>Lương</th>
-            <th>Trạng thái</th>
             <th>Hành động</th>
         </tr>
         </thead>
 
         <tbody>
         <tr th:each="n : ${danhSach}">
+
             <td th:text="${n.maNV}"></td>
+            <td th:text="${n.cccd}"></td>
             <td th:text="${n.hoTen}"></td>
             <td th:text="${n.ngaySinh}"></td>
             <td th:text="${n.gioiTinh}"></td>
             <td th:text="${n.soDienThoai}"></td>
-            <td th:text="${n.diaChi}"></td>
+            <td th:text="${n.email}"></td>
             <td th:text="${n.chucVu}"></td>
             <td th:text="${n.luong}"></td>
-            <td th:text="${n.trangThai}"></td>
 
             <td>
+
                 <a th:href="@{/nhanvien/sua/{ma}(ma=${n.maNV})}"
                    class="btn btn-warning btn-sm">
                     Sửa
@@ -55,9 +62,12 @@
                    onclick="return confirm('Xác nhận xoá nhân viên này?')">
                     Xoá
                 </a>
+
             </td>
+
         </tr>
         </tbody>
+
     </table>
 
 </div>

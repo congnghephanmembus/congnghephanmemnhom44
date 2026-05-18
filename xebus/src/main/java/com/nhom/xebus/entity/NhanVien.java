@@ -3,6 +3,7 @@ package com.nhom.xebus.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -13,6 +14,9 @@ public class NhanVien {
     @Id
     @Column(name = "MaNV")
     private String maNV;
+
+    @Column(name = "CCCD")
+    private String cccd;
 
     @Column(name = "HoTen")
     private String hoTen;
@@ -26,15 +30,12 @@ public class NhanVien {
     @Column(name = "SoDienThoai")
     private String soDienThoai;
 
-    @Column(name = "DiaChi")
-    private String diaChi;
+    @Column(name = "Email")
+    private String email;
 
     @Column(name = "ChucVu")
     private String chucVu;
 
     @Column(name = "Luong")
-    private Double luong;
-
-    @Column(name = "TrangThai")
-    private String trangThai;
+    private BigDecimal luong;
 }

@@ -17,13 +17,13 @@ public class TaiKhoanController {
     @GetMapping
     public String danhSach(Model model) {
         model.addAttribute("danhSach", taiKhoanService.layTatCa());
-        return "taikhoan/danh-sach";
+        return "tai-khoan/danh-sach";
     }
 
     @GetMapping("/them")
     public String formThem(Model model) {
         model.addAttribute("taiKhoan", new TaiKhoan());
-        return "taikhoan/form";
+        return "tai-khoan/form";
     }
 
     @PostMapping("/luu")
@@ -36,7 +36,7 @@ public class TaiKhoanController {
     public String formSua(@PathVariable String ma, Model model) {
         TaiKhoan taiKhoan = taiKhoanService.timTheoMa(ma);
         model.addAttribute("taiKhoan", taiKhoan);
-        return "taikhoan/form";
+        return "tai-khoan/form";
     }
 
     @GetMapping("/xoa/{ma}")
