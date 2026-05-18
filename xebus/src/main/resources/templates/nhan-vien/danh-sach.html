@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách nhân viên</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+</head>
+<body>
+
+<div class="container mt-4">
+
+    <h2 class="mb-3">Danh sách nhân viên</h2>
+
+    <a href="/" class="btn btn-secondary mb-3">Trang chủ</a>
+    <a href="/nhanvien/them" class="btn btn-success mb-3">+ Thêm nhân viên mới</a>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+        <tr>
+            <th>Mã NV</th>
+            <th>Họ tên</th>
+            <th>Ngày sinh</th>
+            <th>Giới tính</th>
+            <th>SĐT</th>
+            <th>Địa chỉ</th>
+            <th>Chức vụ</th>
+            <th>Lương</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="n : ${danhSach}">
+            <td th:text="${n.maNV}"></td>
+            <td th:text="${n.hoTen}"></td>
+            <td th:text="${n.ngaySinh}"></td>
+            <td th:text="${n.gioiTinh}"></td>
+            <td th:text="${n.soDienThoai}"></td>
+            <td th:text="${n.diaChi}"></td>
+            <td th:text="${n.chucVu}"></td>
+            <td th:text="${n.luong}"></td>
+            <td th:text="${n.trangThai}"></td>
+
+            <td>
+                <a th:href="@{/nhanvien/sua/{ma}(ma=${n.maNV})}"
+                   class="btn btn-warning btn-sm">
+                    Sửa
+                </a>
+
+                <a th:href="@{/nhanvien/xoa/{ma}(ma=${n.maNV})}"
+                   class="btn btn-danger btn-sm"
+                   onclick="return confirm('Xác nhận xoá nhân viên này?')">
+                    Xoá
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

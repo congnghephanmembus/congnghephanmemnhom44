@@ -25,11 +25,11 @@ public class TuyenXeService {
         tuyenXeRepository.save(tuyenXe);
     }
 
-    public TuyenXe timTheoMa(String ma) {
-        return tuyenXeRepository.findById(ma).orElse(null);
+    public TuyenXe timTheoMa(String maTuyen) {
+        return tuyenXeRepository.findById(maTuyen).orElse(null);
     }
 
-    public void xoa(String ma) {
-        tuyenXeRepository.deleteById(ma);
+    public void xoa(String maTuyen) {
+        tuyenXeRepository.deleteById(maTuyen);
     }
 }
