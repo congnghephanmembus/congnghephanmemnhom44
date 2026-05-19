@@ -70,6 +70,12 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- Spring Security: đăng nhập và phân quyền -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
         <!-- Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
