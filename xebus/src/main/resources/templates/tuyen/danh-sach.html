@@ -39,6 +39,11 @@
                 <td th:text="${t.trangThai}"></td>
 
                 <td>
+                    <a th:href="@{/tuyen/chi-tiet/{ma}(ma=${t.maTuyen})}"
+                    class="btn btn-info btn-sm">
+                        Chi tiết tuyến
+                    </a>
+                    
                     <a th:href="@{/tuyen/sua/{ma}(ma=${t.maTuyen})}"
                        class="btn btn-warning btn-sm">
                         Sửa

@@ -35,7 +35,11 @@
             <td th:text="${c.maChuyen}"></td>
             <td th:text="${c.maTuyen}"></td>
             <td th:text="${c.maXe}"></td>
-            <td th:text="${c.maLich}"></td>
+            <td>
+                <a th:href="@{/lich/{ma}(ma=${c.maLich})}"
+                th:text="${c.maLich}">
+                </a>
+            </td>
             <td th:text="${c.gioKhoiHanh}"></td>
             <td th:text="${c.gioDenDuKien}"></td>
             <td th:text="${c.trangThaiChuyen}"></td>

@@ -133,18 +133,19 @@ INSERT INTO dbo.LichChay (MaLich, MaTuyen, GioBatDau, GioKetThuc, TanSuatPhut)
 VALUES ('L003','T003','04:30:00','23:00:00',10);
 GO
 
--- 8) CHUYENXE (theo schema thật có NgayChay)
+
+-- 8) CHUYENXE
 IF NOT EXISTS (SELECT 1 FROM dbo.ChuyenXe WHERE MaChuyen='C001')
-INSERT INTO dbo.ChuyenXe (MaChuyen, MaTuyen, MaXe, NgayChay, GioKhoiHanh, GioDenDuKien, TrangThaiChuyen)
-VALUES ('C001','T001','X001','2026-06-01','2026-06-01T06:00:00','2026-06-01T06:45:00',N'Chờ khởi hành');
+INSERT INTO dbo.ChuyenXe (MaChuyen, MaTuyen, MaXe, MaLich, GioKhoiHanh, GioDenDuKien, TrangThaiChuyen)
+VALUES ('C001','T001','X001','L001','2026-06-01T06:00:00','2026-06-01T06:45:00',N'Chờ khởi hành');
 
 IF NOT EXISTS (SELECT 1 FROM dbo.ChuyenXe WHERE MaChuyen='C002')
-INSERT INTO dbo.ChuyenXe (MaChuyen, MaTuyen, MaXe, NgayChay, GioKhoiHanh, GioDenDuKien, TrangThaiChuyen)
-VALUES ('C002','T002','X002','2026-06-01','2026-06-01T07:00:00','2026-06-01T08:10:00',N'Đang chạy');
+INSERT INTO dbo.ChuyenXe (MaChuyen, MaTuyen, MaXe, MaLich, GioKhoiHanh, GioDenDuKien, TrangThaiChuyen)
+VALUES ('C002','T002','X002','L002','2026-06-01T07:00:00','2026-06-01T08:10:00',N'Đang chạy');
 
 IF NOT EXISTS (SELECT 1 FROM dbo.ChuyenXe WHERE MaChuyen='C003')
-INSERT INTO dbo.ChuyenXe (MaChuyen, MaTuyen, MaXe, NgayChay, GioKhoiHanh, GioDenDuKien, TrangThaiChuyen)
-VALUES ('C003','T003','X001','2026-06-01','2026-06-01T08:00:00','2026-06-01T08:35:00',N'Hoàn thành');
+INSERT INTO dbo.ChuyenXe (MaChuyen, MaTuyen, MaXe, MaLich, GioKhoiHanh, GioDenDuKien, TrangThaiChuyen)
+VALUES ('C003','T003','X001','L003','2026-06-01T08:00:00','2026-06-01T08:35:00',N'Hoàn thành');
 GO
 
 -- 9) PHANCONGNHANVIEN
