@@ -21,27 +21,61 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http
                 .userDetailsService(customUserDetailsService)
+
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/css/**", "/js/**", "/images/**").permitAll()
-                        .requestMatchers("/taikhoan/**").hasAnyRole("QuanTriVien")
-                        .requestMatchers("/nhanvien/**").hasAnyRole("QuanLy", "QuanTriVien")
-                        .requestMatchers("/tuyen/**", "/chuyen/**").hasAnyRole("QuanLy", "QuanTriVien")
-                        .requestMatchers("/ve/**", "/thanh-toan/**", "/khach-hang/**")
-                        .hasAnyRole("NhanVienBanVe", "QuanLy", "QuanTriVien")
+
+                        .requestMatchers(
+                                "/login",
+                                "/css/**",
+                                "/js/**",
+                                "/images/**"
+                        ).permitAll()
+
+                        // ADMIN
+                        .requestMatchers(
+                                "/taikhoan/**",
+                                "/nhatky/**"
+                        ).hasRole("QuanTriVien")
+
+                        // MANAGER + ADMIN
+                        .requestMatchers(
+                                "/tuyen/**",
+                                "/xe/**",
+                                "/chuyen/**",
+                                "/lich/**",
+                                "/nhanvien/**",
+                                "/baocao/**"
+                        ).hasAnyRole("QuanLy", "QuanTriVien")
+
+                        // SELLER + MANAGER + ADMIN
+                        .requestMatchers(
+                                "/ve/**",
+                                "/khachhang/**",
+                                "/thanhtoan/**"
+                        ).hasAnyRole(
+                                "NhanVienBanVe",
+                                "QuanLy",
+                                "QuanTriVien"
+                        )
+
                         .anyRequest().authenticated()
                 )
+
                 .formLogin(form -> form
                         .loginPage("/login")
                         .successHandler(authenticationSuccessHandler())
                         .failureUrl("/login?error")
                         .permitAll()
                 )
+
                 .logout(logout -> logout
                         .logoutSuccessUrl("/login?logout")
                         .permitAll()
                 )
+
                 .csrf(Customizer.withDefaults());
 
         return http.build();
@@ -49,20 +83,29 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
+
         return (request, response, authentication) -> {
+
             var authorities = authentication.getAuthorities();
 
-            if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_QuanTriVien"))) {
-                response.sendRedirect("/taikhoan");
-                return;
-            }
+            // ADMIN
+            if (authorities.stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_QuanTriVien"))) {
 
-            if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_QuanLy"))) {
                 response.sendRedirect("/");
                 return;
             }
 
-            response.sendRedirect("/ve");
+            // MANAGER
+            if (authorities.stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_QuanLy"))) {
+
+                response.sendRedirect("/");
+                return;
+            }
+
+            // SELLER
+            response.sendRedirect("/");
         };
     }
 

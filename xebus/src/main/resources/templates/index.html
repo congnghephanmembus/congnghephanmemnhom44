@@ -1,55 +1,269 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
-    <title>Quản lý vé xe buýt nội đô</title>
+    <title>Hệ thống quản lý vé xe buýt nội đô</title>
 
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+
+    <style>
+
+        body{
+            background-color: #f5f6fa;
+        }
+
+        .menu-card{
+            transition: 0.2s;
+        }
+
+        .menu-card:hover{
+            transform: translateY(-3px);
+        }
+
+        .role-badge{
+            font-size: 14px;
+        }
+
+    </style>
 </head>
+
 <body>
 
 <div class="container mt-4">
 
-    <div class="d-flex justify-content-between align-items-center">
-        <h1>Hệ thống quản lý vé xe buýt nội đô</h1>
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h1>Hệ thống quản lý vé xe buýt nội đô</h1>
+
+            <h5 class="mt-3">
+                Xin chào,
+                <strong sec:authentication="name"></strong>
+            </h5>
+
+            <!-- HIỂN THỊ ROLE -->
+            <div>
+
+                <span class="badge bg-danger role-badge"
+                      sec:authorize="hasRole('QuanTriVien')">
+                    Quản trị viên
+                </span>
+
+                <span class="badge bg-primary role-badge"
+                      sec:authorize="hasRole('QuanLy')">
+                    Quản lý
+                </span>
+
+                <span class="badge bg-success role-badge"
+                      sec:authorize="hasRole('NhanVienBanVe')">
+                    Nhân viên bán vé
+                </span>
+
+            </div>
+
+        </div>
+
+        <!-- LOGOUT -->
         <form th:action="@{/logout}" method="post">
-            <button type="submit" class="btn btn-outline-danger">Đăng xuất</button>
+
+            <button class="btn btn-outline-danger">
+                Đăng xuất
+            </button>
+
         </form>
+
     </div>
 
-    <div class="list-group mt-4">
 
-        <a href="/tuyen"
-           class="list-group-item list-group-item-action">
-            Quản lý tuyến xe
-        </a>
+    <!-- THỐNG KÊ -->
+    <div class="row mb-4">
 
-        <a href="/chuyen"
-           class="list-group-item list-group-item-action">
-            Quản lý chuyến xe
-        </a>
+        <div class="col-md-3">
 
-        <a href="/nhanvien"
-           class="list-group-item list-group-item-action">
-            Quản lý nhân viên
-        </a>
+            <div class="card shadow-sm menu-card">
+
+                <div class="card-body">
+
+                    <h5>Tuyến xe</h5>
+
+                    <h3>12</h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm menu-card">
+
+                <div class="card-body">
+
+                    <h5>Chuyến hôm nay</h5>
+
+                    <h3>85</h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm menu-card">
+
+                <div class="card-body">
+
+                    <h5>Vé đã bán</h5>
+
+                    <h3>1240</h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm menu-card">
+
+                <div class="card-body">
+
+                    <h5>Doanh thu</h5>
+
+                    <h3>18 triệu</h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 
-        <a href="/khach-hang"
-           class="list-group-item list-group-item-action">
-            Quản lý khách hàng
-        </a>
+    <!-- MENU CHỨC NĂNG -->
+    <div class="card shadow-sm">
 
-        <a href="/ve"
-           class="list-group-item list-group-item-action">
-            Quản lý vé
-        </a>
+        <div class="card-header">
 
-        <a href="/thanh-toan"
-           class="list-group-item list-group-item-action">
-            Quản lý thanh toán
-        </a>
+            <h4 class="mb-0">
+                Chức năng hệ thống
+            </h4>
+
+        </div>
+
+        <div class="list-group list-group-flush">
+
+
+            <!-- ========================= -->
+            <!-- MANAGER + ADMIN -->
+            <!-- ========================= -->
+
+            <div sec:authorize="hasAnyRole('QuanLy','QuanTriVien')">
+
+                <a href="/tuyen"
+                   class="list-group-item list-group-item-action">
+
+                    Quản lý tuyến xe
+
+                </a>
+
+                <a href="/chuyen"
+                   class="list-group-item list-group-item-action">
+
+                    Quản lý chuyến xe
+
+                </a>
+
+                <a href="/nhanvien"
+                   class="list-group-item list-group-item-action">
+
+                    Quản lý nhân viên
+
+                </a>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- SELLER + MANAGER + ADMIN -->
+            <!-- ========================= -->
+
+            <div sec:authorize="hasAnyRole('NhanVienBanVe','QuanLy','QuanTriVien')">
+
+                <a href="/khach-hang"
+                   class="list-group-item list-group-item-action">
+
+                    Quản lý khách hàng
+
+                </a>
+
+                <a href="/ve"
+                   class="list-group-item list-group-item-action">
+
+                    Quản lý vé
+
+                </a>
+
+                <a href="/thanh-toan"
+                   class="list-group-item list-group-item-action">
+
+                    Quản lý thanh toán
+
+                </a>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- ADMIN ONLY -->
+            <!-- ========================= -->
+
+            <div sec:authorize="hasRole('QuanTriVien')">
+
+                <a href="/taikhoan"
+                   class="list-group-item list-group-item-action">
+
+                    Quản lý tài khoản
+
+                </a>
+
+                <a href="/nhat-ky"
+                   class="list-group-item list-group-item-action">
+
+                    Nhật ký hệ thống
+
+                </a>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- MANAGER + ADMIN -->
+            <!-- ========================= -->
+
+            <div sec:authorize="hasAnyRole('QuanLy','QuanTriVien')">
+
+                <a href="/bao-cao"
+                   class="list-group-item list-group-item-action">
+
+                    Báo cáo thống kê
+
+                </a>
+
+            </div>
+
+        </div>
 
     </div>
 
