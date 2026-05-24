@@ -1,21 +1,37 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <title>Danh sách vé</title>
+
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
 </head>
+
 <body>
 
 <div class="container mt-4">
 
-    <h2>Danh sách vé</h2>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Danh sách vé</h2>
 
-    <a href="/" class="btn btn-secondary mb-3">Trang chủ</a>
-    <a href="/ve/them" class="btn btn-success mb-3">+ Thêm vé</a>
+        <a href="/" class="btn btn-secondary">
+            Trang chủ
+        </a>
+    </div>
 
-    <table class="table table-bordered table-hover">
+    <!-- Admin + Staff được thêm -->
+    <a sec:authorize="hasAnyRole('ROLE_QuanTriVien', 'ROLE_NhanVienBanVe')"
+       href="/ve/them"
+       class="btn btn-success mb-3">
+        + Thêm vé
+    </a>
+
+    <table class="table table-bordered table-hover align-middle">
+
         <thead class="table-dark">
         <tr>
             <th>Mã vé</th>
@@ -23,27 +39,47 @@
             <th>Mã loại vé</th>
             <th>Mã tuyến</th>
             <th>Ngày mua</th>
-            <th>Hành động</th>
+            <th width="220">Hành động</th>
         </tr>
         </thead>
 
         <tbody>
-        <tr th:each="v : ${danhSach}">
-            <td th:text="${v.maVe}"></td>
-            <td th:text="${v.maKH}"></td>
-            <td th:text="${v.maLoaiVe}"></td>
-            <td th:text="${v.maTuyen}"></td>
-            <td th:text="${v.ngayMua}"></td>
-            <td>
-                <a th:href="@{/ve/sua/{ma}(ma=${v.maVe})}"
-                   class="btn btn-warning btn-sm">Sửa</a>
 
-                <a th:href="@{/ve/xoa/{ma}(ma=${v.maVe})}"
+        <tr th:each="v : ${danhSach}">
+
+            <td th:text="${v.maVe}"></td>
+
+            <td th:text="${v.maKH}"></td>
+
+            <td th:text="${v.maLoaiVe}"></td>
+
+            <td th:text="${v.maTuyen}"></td>
+
+            <td th:text="${v.ngayMua}"></td>
+
+            <td>
+
+                <!-- Admin + Staff được sửa -->
+                <a sec:authorize="hasAnyRole('ROLE_QuanTriVien', 'ROLE_NhanVienBanVe')"
+                   th:href="@{/ve/sua/{ma}(ma=${v.maVe})}"
+                   class="btn btn-warning btn-sm">
+                    Sửa
+                </a>
+
+                <!-- Chỉ Admin được xóa -->
+                <a sec:authorize="hasRole('ROLE_QuanTriVien')"
+                   th:href="@{/ve/xoa/{ma}(ma=${v.maVe})}"
                    class="btn btn-danger btn-sm"
-                   onclick="return confirm('Xác nhận xoá vé?')">Xoá</a>
+                   onclick="return confirm('Xác nhận xoá vé?')">
+                    Xoá
+                </a>
+
             </td>
+
         </tr>
+
         </tbody>
+
     </table>
 
 </div>

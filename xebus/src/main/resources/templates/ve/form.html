@@ -1,46 +1,160 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Form vé</title>
+
+    <title>Thông tin vé</title>
+
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
 </head>
+
 <body>
 
 <div class="container mt-4">
 
-    <h2>Thông tin vé</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-    <form th:action="@{/ve/luu}" th:object="${ve}" method="post">
+        <h2>
+
+            <span th:if="${ve.maVe == null or ve.maVe == ''}">
+                Thêm vé
+            </span>
+
+            <span th:unless="${ve.maVe == null or ve.maVe == ''}">
+                Cập nhật vé
+            </span>
+
+        </h2>
+
+        <a href="/ve"
+           class="btn btn-secondary">
+
+            Quay lại
+
+        </a>
+
+    </div>
+
+    <form th:action="@{/ve/luu}"
+          th:object="${ve}"
+          method="post">
+
+        <!-- MÃ VÉ -->
 
         <div class="mb-3">
-            <label class="form-label">Mã vé</label>
-            <input type="text" th:field="*{maVe}" class="form-control" required>
+
+            <label class="form-label">
+
+                Mã vé
+
+            </label>
+
+            <!-- THÊM -->
+            <input th:if="${ve.maVe == null or ve.maVe == ''}"
+                   type="text"
+                   th:field="*{maVe}"
+                   class="form-control"
+                   placeholder="Ví dụ: VE001"
+                   required>
+
+            <!-- SỬA -->
+            <input th:unless="${ve.maVe == null or ve.maVe == ''}"
+                   type="text"
+                   th:field="*{maVe}"
+                   class="form-control"
+                   readonly>
+
         </div>
+
+        <!-- MÃ KHÁCH HÀNG -->
 
         <div class="mb-3">
-            <label class="form-label">Mã khách hàng</label>
-            <input type="text" th:field="*{maKH}" class="form-control">
+
+            <label class="form-label">
+
+                Mã khách hàng
+
+            </label>
+
+            <input type="text"
+                   th:field="*{maKH}"
+                   class="form-control"
+                   placeholder="Ví dụ: KH001"
+                   required>
+
         </div>
+
+        <!-- MÃ LOẠI VÉ -->
 
         <div class="mb-3">
-            <label class="form-label">Mã loại vé</label>
-            <input type="text" th:field="*{maLoaiVe}" class="form-control">
+
+            <label class="form-label">
+
+                Mã loại vé
+
+            </label>
+
+            <input type="text"
+                   th:field="*{maLoaiVe}"
+                   class="form-control"
+                   placeholder="Ví dụ: LV001"
+                   required>
+
         </div>
+
+        <!-- MÃ TUYẾN -->
 
         <div class="mb-3">
-            <label class="form-label">Mã tuyến</label>
-            <input type="text" th:field="*{maTuyen}" class="form-control">
+
+            <label class="form-label">
+
+                Mã tuyến
+
+            </label>
+
+            <input type="text"
+                   th:field="*{maTuyen}"
+                   class="form-control"
+                   placeholder="Ví dụ: T001"
+                   required>
+
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Ngày mua</label>
-            <input type="datetime-local" th:field="*{ngayMua}" class="form-control">
+        <!-- NGÀY MUA -->
+
+        <div class="mb-4">
+
+            <label class="form-label">
+
+                Ngày mua
+
+            </label>
+
+            <input type="datetime-local"
+                   th:field="*{ngayMua}"
+                   class="form-control"
+                   required>
+
         </div>
 
-        <button type="submit" class="btn btn-primary">Lưu</button>
-        <a href="/ve" class="btn btn-secondary">Quay lại</a>
+        <!-- BUTTON -->
+
+        <button type="submit"
+                class="btn btn-primary">
+
+            Lưu
+
+        </button>
+
+        <a href="/ve"
+           class="btn btn-secondary">
+
+            Huỷ
+
+        </a>
 
     </form>
 

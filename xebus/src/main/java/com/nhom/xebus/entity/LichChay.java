@@ -1,9 +1,6 @@
 package com.nhom.xebus.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalTime;
 
@@ -11,12 +8,17 @@ import java.time.LocalTime;
 @Table(name = "LichChay")
 public class LichChay {
 
+    // =========================
+    // PRIMARY KEY
+    // =========================
+
     @Id
     @Column(name = "MaLich")
     private String maLich;
 
-    @Column(name = "MaTuyen")
-    private String maTuyen;
+    // =========================
+    // THÔNG TIN LỊCH CHẠY
+    // =========================
 
     @Column(name = "GioBatDau")
     private LocalTime gioBatDau;
@@ -27,11 +29,24 @@ public class LichChay {
     @Column(name = "TanSuatPhut")
     private Integer tanSuatPhut;
 
-    // Constructor rỗng
+    // =========================
+    // LIÊN KẾT TUYẾN XE
+    // =========================
+
+    @ManyToOne
+    @JoinColumn(name = "MaTuyen")
+    private TuyenXe tuyenXe;
+
+    // =========================
+    // CONSTRUCTOR
+    // =========================
+
     public LichChay() {
     }
 
-    // Getter và Setter
+    // =========================
+    // GETTER & SETTER
+    // =========================
 
     public String getMaLich() {
         return maLich;
@@ -39,14 +54,6 @@ public class LichChay {
 
     public void setMaLich(String maLich) {
         this.maLich = maLich;
-    }
-
-    public String getMaTuyen() {
-        return maTuyen;
-    }
-
-    public void setMaTuyen(String maTuyen) {
-        this.maTuyen = maTuyen;
     }
 
     public LocalTime getGioBatDau() {
@@ -71,5 +78,26 @@ public class LichChay {
 
     public void setTanSuatPhut(Integer tanSuatPhut) {
         this.tanSuatPhut = tanSuatPhut;
+    }
+
+    public TuyenXe getTuyenXe() {
+        return tuyenXe;
+    }
+
+    public void setTuyenXe(TuyenXe tuyenXe) {
+        this.tuyenXe = tuyenXe;
+    }
+
+    // =========================
+    // HELPER
+    // =========================
+
+    public String getMaTuyen() {
+
+        if (tuyenXe == null) {
+            return "";
+        }
+
+        return tuyenXe.getMaTuyen();
     }
 }

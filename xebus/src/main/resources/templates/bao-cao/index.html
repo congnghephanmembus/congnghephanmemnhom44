@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -13,30 +14,85 @@
 
 <div class="container mt-4">
 
-    <h2>Báo cáo thống kê</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-    <a href="/" class="btn btn-secondary mb-3">
-        Quay lại trang chủ
-    </a>
+        <h2 class="mb-0">
+            Báo cáo thống kê
+        </h2>
 
-    <div class="card p-3 mb-3">
+        <a href="/"
+           class="btn btn-secondary">
 
-        <h5>Tổng số vé đã bán</h5>
-        <h3>1,240 vé</h3>
+            Trang chủ
 
-    </div>
-
-    <div class="card p-3 mb-3">
-
-        <h5>Doanh thu hôm nay</h5>
-        <h3>18,000,000 VNĐ</h3>
+        </a>
 
     </div>
 
-    <div class="card p-3">
+    <div class="row">
 
-        <h5>Số chuyến hoạt động</h5>
-        <h3>85 chuyến</h3>
+        <!-- TỔNG SỐ VÉ -->
+        <div class="col-md-4 mb-3">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h5 class="card-title">
+                        Tổng số vé đã bán
+                    </h5>
+
+                    <h3 th:text="${tongVe} + ' vé'">
+                        0 vé
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- DOANH THU -->
+        <div class="col-md-4 mb-3">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h5 class="card-title">
+                        Tổng doanh thu
+                    </h5>
+
+                    <h3 th:text="${doanhThu} + ' VNĐ'">
+                        0 VNĐ
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- CHUYẾN XE -->
+        <div class="col-md-4 mb-3">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h5 class="card-title">
+                        Số chuyến hoạt động
+                    </h5>
+
+                    <h3 th:text="${tongChuyen} + ' chuyến'">
+                        0 chuyến
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
 

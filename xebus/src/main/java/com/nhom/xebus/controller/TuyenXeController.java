@@ -5,6 +5,7 @@ import com.nhom.xebus.entity.Tram;
 import com.nhom.xebus.entity.TuyenXe;
 import com.nhom.xebus.repository.ChiTietTuyenRepository;
 import com.nhom.xebus.repository.TramRepository;
+import com.nhom.xebus.service.NhatKyService;
 import com.nhom.xebus.service.TuyenXeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,13 @@ public class TuyenXeController {
     @Autowired
     private TramRepository tramRepository;
 
+    @Autowired
+    private NhatKyService nhatKyService;
+
+    // =========================
+    // DANH SÁCH TUYẾN
+    // =========================
+
     @GetMapping
     public String danhSach(Model model) {
 
@@ -38,6 +46,10 @@ public class TuyenXeController {
 
         return "tuyen/danh-sach";
     }
+
+    // =========================
+    // FORM THÊM
+    // =========================
 
     @GetMapping("/them")
     public String formThem(Model model) {
@@ -50,6 +62,10 @@ public class TuyenXeController {
         return "tuyen/form";
     }
 
+    // =========================
+    // LƯU
+    // =========================
+
     @PostMapping("/luu")
     public String luu(
             @ModelAttribute("tuyenXe")
@@ -58,8 +74,19 @@ public class TuyenXeController {
 
         tuyenXeService.luu(tuyenXe);
 
+        nhatKyService.ghiLog(
+                "Quản lý tuyến xe",
+                "Tuyến xe",
+                tuyenXe.getMaTuyen(),
+                "Thêm hoặc cập nhật tuyến xe"
+        );
+
         return "redirect:/tuyen";
     }
+
+    // =========================
+    // FORM SỬA
+    // =========================
 
     @GetMapping("/sua/{ma}")
     public String formSua(
@@ -70,6 +97,11 @@ public class TuyenXeController {
         TuyenXe tuyenXe =
                 tuyenXeService.timTheoMa(ma);
 
+        if (tuyenXe == null) {
+
+            return "redirect:/tuyen";
+        }
+
         model.addAttribute(
                 "tuyenXe",
                 tuyenXe
@@ -78,6 +110,10 @@ public class TuyenXeController {
         return "tuyen/form";
     }
 
+    // =========================
+    // XOÁ
+    // =========================
+
     @GetMapping("/xoa/{ma}")
     public String xoa(
             @PathVariable String ma
@@ -85,14 +121,33 @@ public class TuyenXeController {
 
         tuyenXeService.xoa(ma);
 
+        nhatKyService.ghiLog(
+                "Quản lý tuyến xe",
+                "Tuyến xe",
+                ma,
+                "Xoá tuyến xe"
+        );
+
         return "redirect:/tuyen";
     }
+
+    // =========================
+    // CHI TIẾT TUYẾN
+    // =========================
 
     @GetMapping("/chi-tiet/{ma}")
     public String chiTietTuyen(
             @PathVariable String ma,
             Model model
     ) {
+
+        TuyenXe tuyenXe =
+                tuyenXeService.timTheoMa(ma);
+
+        if (tuyenXe == null) {
+
+            return "redirect:/tuyen";
+        }
 
         List<ChiTietTuyen> dsChiTiet =
                 chiTietTuyenRepository
@@ -103,19 +158,15 @@ public class TuyenXeController {
 
         for (ChiTietTuyen ct : dsChiTiet) {
 
-            Tram tram =
-                    tramRepository
-                            .findById(
-                                    ct.getMaTram()
-                            )
-                            .orElse(null);
-
-            if (tram != null) {
-
-                dsTram.add(tram);
-
-            }
+            tramRepository
+                    .findById(ct.getMaTram())
+                    .ifPresent(dsTram::add);
         }
+
+        model.addAttribute(
+                "tuyenXe",
+                tuyenXe
+        );
 
         model.addAttribute(
                 "dsTram",

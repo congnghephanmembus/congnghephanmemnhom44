@@ -2,8 +2,15 @@ package com.nhom.xebus.repository;
 
 import com.nhom.xebus.entity.ThanhToan;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Query;
 
-@Repository
-public interface ThanhToanRepository extends JpaRepository<ThanhToan, String> {
+public interface ThanhToanRepository
+        extends JpaRepository<ThanhToan, String> {
+
+    @Query("""
+        SELECT SUM(t.soTien)
+        FROM ThanhToan t
+    """)
+    Double tongDoanhThu();
+
 }

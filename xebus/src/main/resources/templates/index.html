@@ -47,22 +47,28 @@
                 <strong sec:authentication="name"></strong>
             </h5>
 
-            <!-- HIỂN THỊ ROLE -->
+            <!-- ROLE -->
             <div>
 
                 <span class="badge bg-danger role-badge"
                       sec:authorize="hasRole('QuanTriVien')">
+
                     Quản trị viên
+
                 </span>
 
                 <span class="badge bg-primary role-badge"
                       sec:authorize="hasRole('QuanLy')">
+
                     Quản lý
+
                 </span>
 
                 <span class="badge bg-success role-badge"
                       sec:authorize="hasRole('NhanVienBanVe')">
+
                     Nhân viên bán vé
+
                 </span>
 
             </div>
@@ -73,7 +79,9 @@
         <form th:action="@{/logout}" method="post">
 
             <button class="btn btn-outline-danger">
+
                 Đăng xuất
+
             </button>
 
         </form>
@@ -81,77 +89,7 @@
     </div>
 
 
-    <!-- THỐNG KÊ -->
-    <div class="row mb-4">
-
-        <div class="col-md-3">
-
-            <div class="card shadow-sm menu-card">
-
-                <div class="card-body">
-
-                    <h5>Tuyến xe</h5>
-
-                    <h3>12</h3>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="col-md-3">
-
-            <div class="card shadow-sm menu-card">
-
-                <div class="card-body">
-
-                    <h5>Chuyến hôm nay</h5>
-
-                    <h3>85</h3>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="col-md-3">
-
-            <div class="card shadow-sm menu-card">
-
-                <div class="card-body">
-
-                    <h5>Vé đã bán</h5>
-
-                    <h3>1240</h3>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="col-md-3">
-
-            <div class="card shadow-sm menu-card">
-
-                <div class="card-body">
-
-                    <h5>Doanh thu</h5>
-
-                    <h3>18 triệu</h3>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- MENU CHỨC NĂNG -->
+    <!-- MENU -->
     <div class="card shadow-sm">
 
         <div class="card-header">
@@ -164,12 +102,12 @@
 
         <div class="list-group list-group-flush">
 
-
             <!-- ========================= -->
-            <!-- MANAGER + ADMIN -->
+            <!-- TUYẾN + CHUYẾN -->
+            <!-- STAFF ĐƯỢC XEM -->
             <!-- ========================= -->
 
-            <div sec:authorize="hasAnyRole('QuanLy','QuanTriVien')">
+            <div sec:authorize="hasAnyRole('NhanVienBanVe','QuanLy','QuanTriVien')">
 
                 <a href="/tuyen"
                    class="list-group-item list-group-item-action">
@@ -185,18 +123,39 @@
 
                 </a>
 
-                <a href="/nhanvien"
+            </div>
+
+            <!-- ========================= -->
+            <!-- MANAGER + ADMIN -->
+            <!-- ========================= -->
+
+            <div sec:authorize="hasAnyRole('QuanLy','QuanTriVien')">
+
+                <a href="/nhan-vien"
                    class="list-group-item list-group-item-action">
 
                     Quản lý nhân viên
 
                 </a>
 
+                <a href="/xe"
+                   class="list-group-item list-group-item-action">
+
+                    Quản lý xe buýt
+
+                </a>
+
+                <a href="/lich/tuyen/T001"
+                   class="list-group-item list-group-item-action">
+
+                    Quản lý lịch chạy
+
+                </a>
+
             </div>
 
-
             <!-- ========================= -->
-            <!-- SELLER + MANAGER + ADMIN -->
+            <!-- STAFF + MANAGER + ADMIN -->
             <!-- ========================= -->
 
             <div sec:authorize="hasAnyRole('NhanVienBanVe','QuanLy','QuanTriVien')">
@@ -224,14 +183,13 @@
 
             </div>
 
-
             <!-- ========================= -->
             <!-- ADMIN ONLY -->
             <!-- ========================= -->
 
             <div sec:authorize="hasRole('QuanTriVien')">
 
-                <a href="/taikhoan"
+                <a href="/tai-khoan"
                    class="list-group-item list-group-item-action">
 
                     Quản lý tài khoản
@@ -246,7 +204,6 @@
                 </a>
 
             </div>
-
 
             <!-- ========================= -->
             <!-- MANAGER + ADMIN -->

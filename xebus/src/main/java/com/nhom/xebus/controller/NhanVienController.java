@@ -2,46 +2,97 @@ package com.nhom.xebus.controller;
 
 import com.nhom.xebus.entity.NhanVien;
 import com.nhom.xebus.service.NhanVienService;
+import com.nhom.xebus.service.NhatKyService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/nhanvien")
+@RequestMapping("/nhan-vien")
 public class NhanVienController {
 
     @Autowired
     private NhanVienService nhanVienService;
 
+    @Autowired
+    private NhatKyService nhatKyService;
+
     @GetMapping
     public String danhSach(Model model) {
-        model.addAttribute("danhSach", nhanVienService.layTatCa());
+
+        model.addAttribute(
+                "danhSach",
+                nhanVienService.layTatCa()
+        );
+
         return "nhan-vien/danh-sach";
     }
 
     @GetMapping("/them")
     public String formThem(Model model) {
-        model.addAttribute("nhanVien", new NhanVien());
+
+        model.addAttribute(
+                "nhanVien",
+                new NhanVien()
+        );
+
         return "nhan-vien/form";
     }
 
     @PostMapping("/luu")
-    public String luu(@ModelAttribute("nhanVien") NhanVien nhanVien) {
+    public String luu(
+            @ModelAttribute("nhanVien")
+            NhanVien nhanVien
+    ) {
+
         nhanVienService.luu(nhanVien);
-        return "redirect:/nhanvien";
+
+        nhatKyService.ghiLog(
+                "Quản lý nhân viên",
+                "Nhân viên",
+                nhanVien.getMaNV(),
+                "Thêm hoặc cập nhật nhân viên"
+        );
+
+        return "redirect:/nhan-vien";
     }
 
     @GetMapping("/sua/{ma}")
-    public String formSua(@PathVariable String ma, Model model) {
-        NhanVien nhanVien = nhanVienService.timTheoMa(ma);
-        model.addAttribute("nhanVien", nhanVien);
+    public String formSua(
+            @PathVariable String ma,
+            Model model
+    ) {
+
+        NhanVien nhanVien =
+                nhanVienService.timTheoMa(ma);
+
+        if (nhanVien == null) {
+
+            return "redirect:/nhan-vien";
+        }
+
+        model.addAttribute(
+                "nhanVien",
+                nhanVien
+        );
+
         return "nhan-vien/form";
     }
 
     @GetMapping("/xoa/{ma}")
     public String xoa(@PathVariable String ma) {
+
         nhanVienService.xoa(ma);
-        return "redirect:/nhanvien";
+
+        nhatKyService.ghiLog(
+                "Quản lý nhân viên",
+                "Nhân viên",
+                ma,
+                "Xoá nhân viên"
+        );
+
+        return "redirect:/nhan-vien";
     }
 }

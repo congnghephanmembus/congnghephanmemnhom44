@@ -1,52 +1,185 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Form tuyến xe</title>
+
+    <title>Thông tin tuyến xe</title>
 
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
 </head>
+
 <body>
 
 <div class="container mt-4">
 
-    <h2>Thông tin tuyến xe</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-    <form th:action="@{/tuyen/luu}" th:object="${tuyenXe}" method="post">
+        <h2>
+
+            <span th:if="${tuyenXe.maTuyen == null or tuyenXe.maTuyen == ''}">
+                Thêm tuyến xe
+            </span>
+
+            <span th:unless="${tuyenXe.maTuyen == null or tuyenXe.maTuyen == ''}">
+                Cập nhật tuyến xe
+            </span>
+
+        </h2>
+
+        <a href="/tuyen"
+           class="btn btn-secondary">
+
+            Quay lại
+
+        </a>
+
+    </div>
+
+    <form th:action="@{/tuyen/luu}"
+          th:object="${tuyenXe}"
+          method="post">
+
+        <!-- MÃ TUYẾN -->
 
         <div class="mb-3">
-            <label class="form-label">Mã tuyến</label>
-            <input type="text" th:field="*{maTuyen}" class="form-control" required>
+
+            <label class="form-label">
+
+                Mã tuyến
+
+            </label>
+
+            <!-- THÊM -->
+            <input th:if="${tuyenXe.maTuyen == null or tuyenXe.maTuyen == ''}"
+                   type="text"
+                   th:field="*{maTuyen}"
+                   class="form-control"
+                   placeholder="Ví dụ: T001"
+                   required>
+
+            <!-- SỬA -->
+            <input th:unless="${tuyenXe.maTuyen == null or tuyenXe.maTuyen == ''}"
+                   type="text"
+                   th:field="*{maTuyen}"
+                   class="form-control"
+                   readonly>
+
         </div>
+
+        <!-- TÊN TUYẾN -->
 
         <div class="mb-3">
-            <label class="form-label">Tên tuyến</label>
-            <input type="text" th:field="*{tenTuyen}" class="form-control" required>
+
+            <label class="form-label">
+
+                Tên tuyến
+
+            </label>
+
+            <input type="text"
+                   th:field="*{tenTuyen}"
+                   class="form-control"
+                   placeholder="Nhập tên tuyến"
+                   required>
+
         </div>
+
+        <!-- ĐIỂM ĐẦU -->
 
         <div class="mb-3">
-            <label class="form-label">Điểm đầu</label>
-            <input type="text" th:field="*{diemDau}" class="form-control">
+
+            <label class="form-label">
+
+                Điểm đầu
+
+            </label>
+
+            <input type="text"
+                   th:field="*{diemDau}"
+                   class="form-control"
+                   placeholder="Nhập điểm đầu">
+
         </div>
+
+        <!-- ĐIỂM CUỐI -->
 
         <div class="mb-3">
-            <label class="form-label">Điểm cuối</label>
-            <input type="text" th:field="*{diemCuoi}" class="form-control">
+
+            <label class="form-label">
+
+                Điểm cuối
+
+            </label>
+
+            <input type="text"
+                   th:field="*{diemCuoi}"
+                   class="form-control"
+                   placeholder="Nhập điểm cuối">
+
         </div>
+
+        <!-- CỰ LY -->
 
         <div class="mb-3">
-            <label class="form-label">Cự ly km</label>
-            <input type="number" step="0.01" th:field="*{cuLy}" class="form-control">
+
+            <label class="form-label">
+
+                Cự ly (km)
+
+            </label>
+
+            <input type="number"
+                   step="0.01"
+                   min="0"
+                   th:field="*{cuLy}"
+                   class="form-control"
+                   placeholder="Ví dụ: 15.5">
+
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Trạng thái</label>
-            <input type="text" th:field="*{trangThai}" class="form-control">
+        <!-- TRẠNG THÁI -->
+
+        <div class="mb-4">
+
+            <label class="form-label">
+
+                Trạng thái
+
+            </label>
+
+            <select th:field="*{trangThai}"
+                    class="form-select">
+
+                <option value="Hoạt động">
+                    Hoạt động
+                </option>
+
+                <option value="Tạm ngưng">
+                    Tạm ngưng
+                </option>
+
+            </select>
+
         </div>
 
-        <button type="submit" class="btn btn-primary">Lưu</button>
-        <a href="/tuyen" class="btn btn-secondary">Quay lại</a>
+        <!-- BUTTON -->
+
+        <button type="submit"
+                class="btn btn-primary">
+
+            Lưu
+
+        </button>
+
+        <a href="/tuyen"
+           class="btn btn-secondary">
+
+            Huỷ
+
+        </a>
 
     </form>
 

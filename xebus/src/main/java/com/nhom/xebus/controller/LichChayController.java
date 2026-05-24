@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/lich")
 public class LichChayController {
@@ -15,20 +17,75 @@ public class LichChayController {
     @Autowired
     private LichChayRepository lichChayRepository;
 
-    @GetMapping("/{ma}")
-    public String xemChiTietLich(@PathVariable("ma") String ma,
-                                 Model model) {
+    // =========================
+    // TẤT CẢ LỊCH CHẠY
+    // =========================
 
-        LichChay lich = lichChayRepository
-                .findById(ma)
-                .orElse(null);
+    @GetMapping
+    public String tatCaLich(Model model) {
+
+        List<LichChay> danhSach =
+                lichChayRepository.findAll();
+
+        model.addAttribute(
+                "danhSach",
+                danhSach
+        );
+
+        return "lich/danh-sach";
+    }
+
+    // =========================
+    // LỊCH CHẠY THEO TUYẾN
+    // =========================
+
+    @GetMapping("/tuyen/{ma}")
+    public String xemLichTheoTuyen(
+            @PathVariable("ma") String ma,
+            Model model
+    ) {
+
+        List<LichChay> danhSach =
+                lichChayRepository.findByTuyenXe_MaTuyen(ma);
+
+        model.addAttribute(
+                "danhSach",
+                danhSach
+        );
+
+        model.addAttribute(
+                "maTuyen",
+                ma
+        );
+
+        return "lich/danh-sach";
+    }
+
+    // =========================
+    // CHI TIẾT
+    // =========================
+
+    @GetMapping("/chi-tiet/{ma}")
+    public String chiTiet(
+            @PathVariable("ma") String ma,
+            Model model
+    ) {
+
+        LichChay lich =
+                lichChayRepository
+                        .findById(ma)
+                        .orElse(null);
 
         if (lich == null) {
-            return "redirect:/chuyen";
+
+            return "redirect:/lich";
         }
 
-        model.addAttribute("lich", lich);
+        model.addAttribute(
+                "lich",
+                lich
+        );
 
-        return "chuyen/chi-tiet";
+        return "lich/chi-tiet";
     }
 }

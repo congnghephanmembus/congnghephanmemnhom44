@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ChuyenXeRepository extends JpaRepository<ChuyenXe, String> {
+    long count();
 }

@@ -27,6 +27,10 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
 
+                        // =========================
+                        // PUBLIC
+                        // =========================
+
                         .requestMatchers(
                                 "/login",
                                 "/css/**",
@@ -34,32 +38,243 @@ public class SecurityConfig {
                                 "/images/**"
                         ).permitAll()
 
-                        // ADMIN
+                        // =========================
+                        // ADMIN ONLY
+                        // =========================
+
                         .requestMatchers(
-                                "/taikhoan/**",
-                                "/nhatky/**"
+                                "/tai-khoan/**",
+                                "/nhat-ky/**"
                         ).hasRole("QuanTriVien")
 
-                        // MANAGER + ADMIN
-                        .requestMatchers(
-                                "/tuyen/**",
-                                "/xe/**",
-                                "/chuyen/**",
-                                "/lich/**",
-                                "/nhanvien/**",
-                                "/baocao/**"
-                        ).hasAnyRole("QuanLy", "QuanTriVien")
+                        // =========================
+                        // BAO CAO
+                        // ADMIN + MANAGER
+                        // =========================
 
-                        // SELLER + MANAGER + ADMIN
                         .requestMatchers(
-                                "/ve/**",
-                                "/khachhang/**",
-                                "/thanhtoan/**"
+                                "/bao-cao/**"
                         ).hasAnyRole(
-                                "NhanVienBanVe",
-                                "QuanLy",
-                                "QuanTriVien"
+                                "QuanTriVien",
+                                "QuanLy"
                         )
+
+                        // =========================
+                        // TUYEN XE
+                        // ADMIN + MANAGER + STAFF(XEM)
+                        // =========================
+
+                        .requestMatchers(
+                                "/tuyen",
+                                "/tuyen/",
+                                "/tuyen/danh-sach",
+                                "/tuyen/chi-tiet/**"
+                        ).hasAnyRole(
+                                "QuanTriVien",
+                                "QuanLy",
+                                "NhanVienBanVe"
+                        )
+
+                        .requestMatchers(
+                                "/tuyen/them",
+                                "/tuyen/luu",
+                                "/tuyen/sua/**"
+                        ).hasAnyRole(
+                                "QuanTriVien",
+                                "QuanLy"
+                        )
+
+                        .requestMatchers(
+                                "/tuyen/xoa/**"
+                        ).hasRole("QuanTriVien")
+
+                        // =========================
+                        // XE BUYT
+                        // ADMIN + MANAGER
+                        // =========================
+
+                        .requestMatchers(
+                                "/xe",
+                                "/xe/",
+                                "/xe/danh-sach"
+                        ).hasAnyRole(
+                                "QuanTriVien",
+                                "QuanLy"
+                        )
+
+                        .requestMatchers(
+                                "/xe/them",
+                                "/xe/luu",
+                                "/xe/sua/**"
+                        ).hasAnyRole(
+                                "QuanTriVien",
+                                "QuanLy"
+                        )
+
+                        .requestMatchers(
+                                "/xe/xoa/**"
+                        ).hasRole("QuanTriVien")
+
+                        // =========================
+                        // CHUYEN XE
+                        // STAFF chỉ xem
+                        // =========================
+
+                        .requestMatchers(
+                                "/chuyen",
+                                "/chuyen/",
+                                "/chuyen/danh-sach",
+                                "/chuyen/chi-tiet/**"
+                        ).hasAnyRole(
+                                "QuanTriVien",
+                                "QuanLy",
+                                "NhanVienBanVe"
+                        )
+
+                        .requestMatchers(
+                                "/chuyen/them",
+                                "/chuyen/luu",
+                                "/chuyen/sua/**"
+                        ).hasAnyRole(
+                                "QuanTriVien",
+                                "QuanLy"
+                        )
+
+                        // Manager được xóa chuyến
+                        .requestMatchers(
+                                "/chuyen/xoa/**"
+                        ).hasAnyRole(
+                                "QuanTriVien",
+                                "QuanLy"
+                        )
+
+                        // =========================
+                        // LICH CHAY
+                        // ADMIN + MANAGER
+                        // =========================
+
+                        .requestMatchers(
+                                "/lich",
+                                "/lich/",
+                                "/lich/danh-sach",
+                                "/lich/**"
+                        ).hasAnyRole(
+                                "QuanTriVien",
+                                "QuanLy"
+                        )
+
+                        .requestMatchers(
+                                "/lich/them",
+                                "/lich/luu",
+                                "/lich/sua/**"
+                        ).hasAnyRole(
+                                "QuanTriVien",
+                                "QuanLy"
+                        )
+
+                        .requestMatchers(
+                                "/lich/xoa/**"
+                        ).hasRole("QuanTriVien")
+
+                        // =========================
+                        // NHAN VIEN
+                        // ADMIN + MANAGER
+                        // =========================
+
+                        .requestMatchers(
+                                "/nhan-vien/**"
+                        ).hasAnyRole(
+                                "QuanTriVien",
+                                "QuanLy"
+                        )
+
+                        // =========================
+                        // KHACH HANG
+                        // STAFF được thêm/sửa
+                        // =========================
+
+                        .requestMatchers(
+                                "/khach-hang",
+                                "/khach-hang/",
+                                "/khach-hang/danh-sach"
+                        ).hasAnyRole(
+                                "QuanTriVien",
+                                "QuanLy",
+                                "NhanVienBanVe"
+                        )
+
+                        .requestMatchers(
+                                "/khach-hang/them",
+                                "/khach-hang/luu",
+                                "/khach-hang/sua/**"
+                        ).hasAnyRole(
+                                "QuanTriVien",
+                                "NhanVienBanVe"
+                        )
+
+                        .requestMatchers(
+                                "/khach-hang/xoa/**"
+                        ).hasRole("QuanTriVien")
+
+                        // =========================
+                        // VE
+                        // STAFF được thêm/sửa
+                        // =========================
+
+                        .requestMatchers(
+                                "/ve",
+                                "/ve/",
+                                "/ve/danh-sach"
+                        ).hasAnyRole(
+                                "QuanTriVien",
+                                "QuanLy",
+                                "NhanVienBanVe"
+                        )
+
+                        .requestMatchers(
+                                "/ve/them",
+                                "/ve/luu",
+                                "/ve/sua/**"
+                        ).hasAnyRole(
+                                "QuanTriVien",
+                                "NhanVienBanVe"
+                        )
+
+                        .requestMatchers(
+                                "/ve/xoa/**"
+                        ).hasRole("QuanTriVien")
+
+                        // =========================
+                        // THANH TOAN
+                        // STAFF chỉ thêm
+                        // =========================
+
+                        .requestMatchers(
+                                "/thanh-toan",
+                                "/thanh-toan/",
+                                "/thanh-toan/danh-sach"
+                        ).hasAnyRole(
+                                "QuanTriVien",
+                                "QuanLy",
+                                "NhanVienBanVe"
+                        )
+
+                        .requestMatchers(
+                                "/thanh-toan/them",
+                                "/thanh-toan/luu"
+                        ).hasAnyRole(
+                                "QuanTriVien",
+                                "NhanVienBanVe"
+                        )
+
+                        .requestMatchers(
+                                "/thanh-toan/sua/**",
+                                "/thanh-toan/xoa/**"
+                        ).hasRole("QuanTriVien")
+
+                        // =========================
+                        // ALL
+                        // =========================
 
                         .anyRequest().authenticated()
                 )
@@ -86,25 +301,6 @@ public class SecurityConfig {
 
         return (request, response, authentication) -> {
 
-            var authorities = authentication.getAuthorities();
-
-            // ADMIN
-            if (authorities.stream()
-                    .anyMatch(a -> a.getAuthority().equals("ROLE_QuanTriVien"))) {
-
-                response.sendRedirect("/");
-                return;
-            }
-
-            // MANAGER
-            if (authorities.stream()
-                    .anyMatch(a -> a.getAuthority().equals("ROLE_QuanLy"))) {
-
-                response.sendRedirect("/");
-                return;
-            }
-
-            // SELLER
             response.sendRedirect("/");
         };
     }
