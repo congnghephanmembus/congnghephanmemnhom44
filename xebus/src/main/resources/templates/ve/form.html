@@ -1,163 +1,72 @@
 <!DOCTYPE html>
-<html lang="vi"
-      xmlns:th="http://www.thymeleaf.org">
-
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-
     <title>Thông tin vé</title>
-
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <style>
+        body { background-color: #f8f9fa; }
+        .form-card { border-radius: 15px; border: none; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .form-label { font-weight: 600; color: #34495e; }
+    </style>
 </head>
-
 <body>
 
-<div class="container mt-4">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="card form-card p-4">
+                <h3 class="mb-4 text-center text-primary">
+                    <i class="fa" th:classappend="${ve.maVe == null or ve.maVe == ''} ? 'fa-plus-circle' : 'fa-edit'"></i>
+                    <span th:if="${ve.maVe == null or ve.maVe == ''}">Thêm vé mới</span>
+                    <span th:unless="${ve.maVe == null or ve.maVe == ''}">Cập nhật thông tin vé</span>
+                </h3>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+                <form th:action="@{/ve/luu}" th:object="${ve}" method="post">
+                    <div class="mb-3">
+                        <label class="form-label"><i class="fa fa-ticket-alt"></i> Mã vé</label>
+                        <input type="text" th:field="*{maVe}" class="form-control" 
+                               th:readonly="${ve.maVe != null and ve.maVe != ''}" 
+                               placeholder="Ví dụ: VE001" required>
+                    </div>
 
-        <h2>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label"><i class="fa fa-user"></i> Mã khách hàng</label>
+                            <input type="text" th:field="*{maKH}" class="form-control" placeholder="KH..." required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label"><i class="fa fa-tags"></i> Mã loại vé</label>
+                            <input type="text" th:field="*{maLoaiVe}" class="form-control" placeholder="LV..." required>
+                        </div>
+                    </div>
 
-            <span th:if="${ve.maVe == null or ve.maVe == ''}">
-                Thêm vé
-            </span>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label"><i class="fa fa-route"></i> Mã tuyến</label>
+                            <input type="text" th:field="*{maTuyen}" class="form-control" placeholder="T..." required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label"><i class="fa fa-calendar-alt"></i> Ngày mua</label>
+                            <input type="datetime-local" th:field="*{ngayMua}" class="form-control" required>
+                        </div>
+                    </div>
 
-            <span th:unless="${ve.maVe == null or ve.maVe == ''}">
-                Cập nhật vé
-            </span>
+                    <hr class="my-4">
 
-        </h2>
-
-        <a href="/ve"
-           class="btn btn-secondary">
-
-            Quay lại
-
-        </a>
-
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="/ve" class="btn btn-outline-secondary px-4">
+                            <i class="fa fa-times"></i> Huỷ
+                        </a>
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="fa fa-save"></i> Lưu dữ liệu
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-
-    <form th:action="@{/ve/luu}"
-          th:object="${ve}"
-          method="post">
-
-        <!-- MÃ VÉ -->
-
-        <div class="mb-3">
-
-            <label class="form-label">
-
-                Mã vé
-
-            </label>
-
-            <!-- THÊM -->
-            <input th:if="${ve.maVe == null or ve.maVe == ''}"
-                   type="text"
-                   th:field="*{maVe}"
-                   class="form-control"
-                   placeholder="Ví dụ: VE001"
-                   required>
-
-            <!-- SỬA -->
-            <input th:unless="${ve.maVe == null or ve.maVe == ''}"
-                   type="text"
-                   th:field="*{maVe}"
-                   class="form-control"
-                   readonly>
-
-        </div>
-
-        <!-- MÃ KHÁCH HÀNG -->
-
-        <div class="mb-3">
-
-            <label class="form-label">
-
-                Mã khách hàng
-
-            </label>
-
-            <input type="text"
-                   th:field="*{maKH}"
-                   class="form-control"
-                   placeholder="Ví dụ: KH001"
-                   required>
-
-        </div>
-
-        <!-- MÃ LOẠI VÉ -->
-
-        <div class="mb-3">
-
-            <label class="form-label">
-
-                Mã loại vé
-
-            </label>
-
-            <input type="text"
-                   th:field="*{maLoaiVe}"
-                   class="form-control"
-                   placeholder="Ví dụ: LV001"
-                   required>
-
-        </div>
-
-        <!-- MÃ TUYẾN -->
-
-        <div class="mb-3">
-
-            <label class="form-label">
-
-                Mã tuyến
-
-            </label>
-
-            <input type="text"
-                   th:field="*{maTuyen}"
-                   class="form-control"
-                   placeholder="Ví dụ: T001"
-                   required>
-
-        </div>
-
-        <!-- NGÀY MUA -->
-
-        <div class="mb-4">
-
-            <label class="form-label">
-
-                Ngày mua
-
-            </label>
-
-            <input type="datetime-local"
-                   th:field="*{ngayMua}"
-                   class="form-control"
-                   required>
-
-        </div>
-
-        <!-- BUTTON -->
-
-        <button type="submit"
-                class="btn btn-primary">
-
-            Lưu
-
-        </button>
-
-        <a href="/ve"
-           class="btn btn-secondary">
-
-            Huỷ
-
-        </a>
-
-    </form>
-
 </div>
 
 </body>

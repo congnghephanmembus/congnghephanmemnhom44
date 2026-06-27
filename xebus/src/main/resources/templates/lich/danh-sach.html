@@ -1,125 +1,73 @@
 <!DOCTYPE html>
-<html lang="vi"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-
     <title>Danh sách lịch chạy</title>
-
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <style>
+        body { background-color: #f8f9fa; }
+        .card { border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .table thead { background-color: #2c3e50; color: #fff; }
+    </style>
 </head>
-
 <body>
 
-<div class="container mt-4">
-
-    <div class="d-flex justify-content-between align-items-center mb-3">
-
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-
-            <h2 class="mb-1">
-                Lịch chạy tuyến
-            </h2>
-
-            <div class="text-muted">
-                Mã tuyến:
-                <strong th:text="${maTuyen}"></strong>
-            </div>
-
+            <h2 class="text-primary fw-bold"><i class="fa fa-clock"></i> Lịch chạy tuyến</h2>
+            <p class="text-muted mb-0">Mã tuyến: <strong class="text-dark" th:text="${maTuyen}"></strong></p>
         </div>
-
-        <a href="/tuyen"
-           class="btn btn-secondary">
-
-            Quay lại
-
-        </a>
-
+        <a href="/tuyen" class="btn btn-outline-secondary"><i class="fa fa-arrow-left"></i> Quay lại</a>
     </div>
 
-    <!-- Admin + Manager -->
-    <a sec:authorize="hasAnyRole('ROLE_QuanTriVien', 'ROLE_QuanLy')"
-       href="/lich/them"
-       class="btn btn-success mb-3">
+    <div class="card p-4">
+        <div class="mb-3">
+            <a sec:authorize="hasAnyRole('ROLE_QuanTriVien', 'ROLE_QuanLy')"
+               href="/lich/them" class="btn btn-success">
+                <i class="fa fa-plus-circle"></i> Thêm lịch chạy
+            </a>
+        </div>
 
-        + Thêm lịch chạy
-
-    </a>
-
-    <table class="table table-bordered table-hover align-middle">
-
-        <thead class="table-dark">
-
-        <tr>
-
-            <th>Mã lịch</th>
-
-            <th>Giờ bắt đầu</th>
-
-            <th>Giờ kết thúc</th>
-
-            <th>Tần suất (phút)</th>
-
-            <th width="260">
-                Hành động
-            </th>
-
-        </tr>
-
-        </thead>
-
-        <tbody>
-
-        <tr th:each="l : ${danhSach}">
-
-            <td th:text="${l.maLich}"></td>
-
-            <td th:text="${l.gioBatDau}"></td>
-
-            <td th:text="${l.gioKetThuc}"></td>
-
-            <td th:text="${l.tanSuatPhut}"></td>
-
-            <td>
-
-                <!-- Ai có quyền xem lịch đều xem được -->
-                <a th:href="@{/lich/chi-tiet/{ma}(ma=${l.maLich})}"
-                   class="btn btn-info btn-sm">
-
-                    Chi tiết
-
-                </a>
-
-                <!-- Admin + Manager -->
-                <a sec:authorize="hasAnyRole('ROLE_QuanTriVien', 'ROLE_QuanLy')"
-                   th:href="@{/lich/sua/{ma}(ma=${l.maLich})}"
-                   class="btn btn-warning btn-sm">
-
-                    Sửa
-
-                </a>
-
-                <!-- Chỉ Admin -->
-                <a sec:authorize="hasRole('ROLE_QuanTriVien')"
-                   th:href="@{/lich/xoa/{ma}(ma=${l.maLich})}"
-                   class="btn btn-danger btn-sm"
-                   onclick="return confirm('Xác nhận xoá lịch chạy này?')">
-
-                    Xoá
-
-                </a>
-
-            </td>
-
-        </tr>
-
-        </tbody>
-
-    </table>
-
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Mã lịch</th>
+                        <th>Giờ bắt đầu</th>
+                        <th>Giờ kết thúc</th>
+                        <th>Tần suất (phút)</th>
+                        <th class="text-center">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="l : ${danhSach}">
+                        <td class="fw-bold" th:text="${l.maLich}"></td>
+                        <td><i class="fa fa-play-circle text-success me-1"></i> <span th:text="${l.gioBatDau}"></span></td>
+                        <td><i class="fa fa-stop-circle text-danger me-1"></i> <span th:text="${l.gioKetThuc}"></span></td>
+                        <td><i class="fa fa-sync text-info me-1"></i> <span th:text="${l.tanSuatPhut}"></span></td>
+                        <td class="text-center">
+                            <div class="btn-group btn-group-sm">
+                                <a th:href="@{/lich/chi-tiet/{ma}(ma=${l.maLich})}" class="btn btn-outline-info">
+                                    <i class="fa fa-info-circle"></i>
+                                </a>
+                                <a sec:authorize="hasAnyRole('ROLE_QuanTriVien', 'ROLE_QuanLy')"
+                                   th:href="@{/lich/sua/{ma}(ma=${l.maLich})}" class="btn btn-outline-warning">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a sec:authorize="hasRole('ROLE_QuanTriVien')"
+                                   th:href="@{/lich/xoa/{ma}(ma=${l.maLich})}" class="btn btn-outline-danger"
+                                   onclick="return confirm('Xác nhận xoá lịch chạy này?')">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 </body>
