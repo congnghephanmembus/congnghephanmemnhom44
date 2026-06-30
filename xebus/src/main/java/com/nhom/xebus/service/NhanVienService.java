@@ -17,19 +17,38 @@ public class NhanVienService {
         return nhanVienRepository.findAll();
     }
 
+    public NhanVien timTheoMa(String maNV) {
+        return nhanVienRepository.findById(maNV).orElse(null);
+    }
+
     public void luu(NhanVien nhanVien) {
         nhanVienRepository.save(nhanVien);
     }
 
-    public void them(NhanVien nhanVien) {
-        nhanVienRepository.save(nhanVien);
+    public void xoa(String maNV) {
+        nhanVienRepository.deleteById(maNV);
     }
 
-    public NhanVien timTheoMa(String ma) {
-        return nhanVienRepository.findById(ma).orElse(null);
-    }
+    // =========================
+    // SINH MÃ NHÂN VIÊN TỰ ĐỘNG
+    // =========================
+    public String sinhMaNV() {
 
-    public void xoa(String ma) {
-        nhanVienRepository.deleteById(ma);
+        String maxMa = nhanVienRepository.findMaxMaNV();
+
+        if (maxMa == null || maxMa.isEmpty()) {
+            return "NV001";
+        }
+
+        // Tách phần số từ mã (VD: NV012 -> 12)
+        String soStr = maxMa.substring(2); // bỏ chữ "NV"
+
+        try {
+            int so = Integer.parseInt(soStr);
+            so++;
+            return String.format("NV%03d", so);
+        } catch (NumberFormatException e) {
+            return "NV001";
+        }
     }
 }

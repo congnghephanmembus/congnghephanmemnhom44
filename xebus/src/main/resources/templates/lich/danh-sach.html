@@ -16,17 +16,25 @@
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h2 class="text-primary fw-bold"><i class="fa fa-clock"></i> Lịch chạy tuyến</h2>
+            <h2 class="text-primary fw-bold"><i class="fa-solid fa-clock"></i> Lịch chạy tuyến</h2>
             <p class="text-muted mb-0">Mã tuyến: <strong class="text-dark" th:text="${maTuyen}"></strong></p>
         </div>
-        <a href="/tuyen" class="btn btn-outline-secondary"><i class="fa fa-arrow-left"></i> Quay lại</a>
+        <a hx-get="/tuyen"
+           hx-target="#main-display"
+           hx-swap="innerHTML"
+           class="btn btn-outline-secondary">
+            <i class="fa-solid fa-arrow-left"></i> Quay lại
+        </a>
     </div>
 
     <div class="card p-4">
         <div class="mb-3">
             <a sec:authorize="hasAnyRole('ROLE_QuanTriVien', 'ROLE_QuanLy')"
-               href="/lich/them" class="btn btn-success">
-                <i class="fa fa-plus-circle"></i> Thêm lịch chạy
+               th:attr="hx-get=@{/lich/them(maTuyen=${maTuyen})}"
+               hx-target="#main-display"
+               hx-swap="innerHTML"
+               class="btn btn-success">
+                <i class="fa-solid fa-plus-circle"></i> Thêm lịch chạy
             </a>
         </div>
 
@@ -44,22 +52,31 @@
                 <tbody>
                     <tr th:each="l : ${danhSach}">
                         <td class="fw-bold" th:text="${l.maLich}"></td>
-                        <td><i class="fa fa-play-circle text-success me-1"></i> <span th:text="${l.gioBatDau}"></span></td>
-                        <td><i class="fa fa-stop-circle text-danger me-1"></i> <span th:text="${l.gioKetThuc}"></span></td>
-                        <td><i class="fa fa-sync text-info me-1"></i> <span th:text="${l.tanSuatPhut}"></span></td>
+                        <td><i class="fa-solid fa-play-circle text-success me-1"></i> <span th:text="${l.gioBatDau}"></span></td>
+                        <td><i class="fa-solid fa-stop-circle text-danger me-1"></i> <span th:text="${l.gioKetThuc}"></span></td>
+                        <td><i class="fa-solid fa-sync text-info me-1"></i> <span th:text="${l.tanSuatPhut}"></span></td>
                         <td class="text-center">
                             <div class="btn-group btn-group-sm">
-                                <a th:href="@{/lich/chi-tiet/{ma}(ma=${l.maLich})}" class="btn btn-outline-info">
-                                    <i class="fa fa-info-circle"></i>
+                                <a th:attr="hx-get=@{/lich/chi-tiet/{ma}(ma=${l.maLich})}"
+                                   hx-target="#main-display"
+                                   hx-swap="innerHTML"
+                                   class="btn btn-outline-info">
+                                    <i class="fa-solid fa-info-circle"></i>
                                 </a>
                                 <a sec:authorize="hasAnyRole('ROLE_QuanTriVien', 'ROLE_QuanLy')"
-                                   th:href="@{/lich/sua/{ma}(ma=${l.maLich})}" class="btn btn-outline-warning">
-                                    <i class="fa fa-edit"></i>
+                                   th:attr="hx-get=@{/lich/sua/{ma}(ma=${l.maLich})}"
+                                   hx-target="#main-display"
+                                   hx-swap="innerHTML"
+                                   class="btn btn-outline-warning">
+                                    <i class="fa-solid fa-edit"></i>
                                 </a>
                                 <a sec:authorize="hasRole('ROLE_QuanTriVien')"
-                                   th:href="@{/lich/xoa/{ma}(ma=${l.maLich})}" class="btn btn-outline-danger"
-                                   onclick="return confirm('Xác nhận xoá lịch chạy này?')">
-                                    <i class="fa fa-trash"></i>
+                                   th:attr="hx-get=@{/lich/xoa/{ma}(ma=${l.maLich})}"
+                                   hx-target="#main-display"
+                                   hx-swap="innerHTML"
+                                   onclick="return confirm('Xác nhận xoá lịch chạy này?')"
+                                   class="btn btn-outline-danger">
+                                    <i class="fa-solid fa-trash"></i>
                                 </a>
                             </div>
                         </td>

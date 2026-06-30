@@ -3,12 +3,17 @@ package com.nhom.xebus.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "TaiKhoan", schema = "dbo")
 @Data
 public class TaiKhoan {
 
     @Id
+    @Column(name = "MaTaiKhoan")
+    private String maTaiKhoan;
+
     @Column(name = "TenDangNhap")
     private String tenDangNhap;
 
@@ -23,4 +28,10 @@ public class TaiKhoan {
 
     @Column(name = "TrangThai")
     private String trangThai;
+
+    @Column(name = "NgayTao")
+    private LocalDateTime ngayTao;
+
+    @Column(name = "NguoiCap")
+    private String nguoiCap;
 }

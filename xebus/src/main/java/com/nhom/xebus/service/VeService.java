@@ -17,15 +17,37 @@ public class VeService {
         return veRepository.findAll();
     }
 
+    public Ve timTheoMa(String maVe) {
+        return veRepository.findById(maVe).orElse(null);
+    }
+
     public void luu(Ve ve) {
         veRepository.save(ve);
     }
 
-    public Ve timTheoMa(String ma) {
-        return veRepository.findById(ma).orElse(null);
+    public void xoa(String maVe) {
+        veRepository.deleteById(maVe);
     }
 
-    public void xoa(String ma) {
-        veRepository.deleteById(ma);
+    // =========================
+    // SINH MÃ VÉ TỰ ĐỘNG
+    // =========================
+    public String sinhMaVe() {
+
+        String maxMa = veRepository.findMaxMaVe();
+
+        if (maxMa == null || maxMa.isEmpty()) {
+            return "V001";
+        }
+
+        String soStr = maxMa.substring(1); // bỏ chữ "V"
+
+        try {
+            int so = Integer.parseInt(soStr);
+            so++;
+            return String.format("V%03d", so);
+        } catch (NumberFormatException e) {
+            return "V001";
+        }
     }
 }

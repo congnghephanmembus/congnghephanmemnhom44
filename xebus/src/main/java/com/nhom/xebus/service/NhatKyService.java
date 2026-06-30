@@ -32,37 +32,58 @@ public class NhatKyService {
             String noiDung
     ) {
 
-        Authentication auth =
-                SecurityContextHolder
-                        .getContext()
-                        .getAuthentication();
+        try {
+            Authentication auth =
+                    SecurityContextHolder
+                            .getContext()
+                            .getAuthentication();
 
-        String username = auth.getName();
+            System.out.println("===== NHAT KY - auth: " + auth);
+            System.out.println("===== NHAT KY - auth.getName(): " + (auth != null ? auth.getName() : "null"));
 
-        TaiKhoan taiKhoan =
-                taiKhoanRepository
+            if (auth == null || !auth.isAuthenticated()) {
+                System.out.println("===== NHAT KY - Chua xac thuc, bo qua ghi log");
+                return;
+            }
+
+            String username = auth.getName();
+            System.out.println("===== NHAT KY - Username: '" + username + "'");
+
+            TaiKhoan taiKhoan = null;
+
+            // Chỉ tìm khi username không phải anonymousUser
+            if (username != null && !username.equals("anonymousUser")) {
+                taiKhoan = taiKhoanRepository
                         .findByTenDangNhap(username)
                         .orElse(null);
+                System.out.println("===== NHAT KY - TaiKhoan tim thay: " + (taiKhoan != null ? taiKhoan.getMaTaiKhoan() : "null"));
+            } else {
+                System.out.println("===== NHAT KY - Username la anonymous, bo qua");
+            }
 
-        NhatKyHeThong log =
-                new NhatKyHeThong();
+            NhatKyHeThong log = new NhatKyHeThong();
+            log.setThoiGian(LocalDateTime.now());
 
-        log.setThoiGian(LocalDateTime.now());
+            if (taiKhoan != null) {
+                log.setMaTaiKhoan(taiKhoan.getMaTaiKhoan());
+                System.out.println("===== NHAT KY - Da set MaTaiKhoan: " + taiKhoan.getMaTaiKhoan());
+            } else {
+                log.setMaTaiKhoan(null);
+                System.out.println("===== NHAT KY - MaTaiKhoan = null");
+            }
 
-        // TẠM KHÔNG GHI MA TAI KHOAN
-        // vì entity đang dùng TenDangNhap làm @Id
-        log.setMaTaiKhoan(null);
+            log.setChucNang(chucNang);
+            log.setDoiTuongTacDong(doiTuong);
+            log.setMaDoiTuong(maDoiTuong);
+            log.setNoiDungChiTiet(noiDung);
+            log.setKetQua("Thành công");
 
-        log.setChucNang(chucNang);
+            repository.save(log);
+            System.out.println("===== NHAT KY - Da luu log thanh cong");
 
-        log.setDoiTuongTacDong(doiTuong);
-
-        log.setMaDoiTuong(maDoiTuong);
-
-        log.setNoiDungChiTiet(noiDung);
-
-        log.setKetQua("Thành công");
-
-        repository.save(log);
+        } catch (Exception e) {
+            System.out.println("===== NHAT KY - LOI: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

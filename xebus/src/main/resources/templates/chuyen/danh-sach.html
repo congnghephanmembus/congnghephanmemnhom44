@@ -1,76 +1,164 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <title>Danh sách chuyến xe</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
     <style>
-        body { background-color: #f4f7f6; }
-        .card { border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .table thead { background-color: #343a40; color: white; }
-        .btn-sm { padding: 0.25rem 0.5rem; font-size: 0.8rem; }
+        body {
+            background-color: #f4f7f6;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .table thead {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+        }
     </style>
 </head>
+
 <body>
 
 <div class="container mt-5">
     <div class="card p-4">
+
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="fw-bold text-primary"><i class="fa-solid fa-bus-simple"></i> Quản lý Chuyến xe</h2>
+
+            <h2 class="fw-bold text-primary">
+                <i class="fa-solid fa-bus-simple"></i>
+                Quản lý Chuyến xe
+            </h2>
+
             <div>
-                <a href="/" class="btn btn-outline-secondary"><i class="fa-solid fa-house"></i> Trang chủ</a>
-                <a sec:authorize="hasAnyRole('ROLE_QuanLy', 'ROLE_QuanTriVien')"
-                   href="/chuyen/them" class="btn btn-success ms-2">
-                   <i class="fa-solid fa-plus"></i> Thêm mới
+
+                <a href="/" class="btn btn-outline-secondary">
+                    <i class="fa-solid fa-house"></i>
+                    Trang chủ
                 </a>
+
+                <a sec:authorize="hasAnyRole('ROLE_QuanLy','ROLE_QuanTriVien')"
+                   hx-get="/chuyen/them"
+                   hx-target="#main-display"
+                   hx-swap="innerHTML"
+                   class="btn btn-success ms-2">
+
+                    <i class="fa-solid fa-plus"></i>
+                    Thêm mới
+
+                </a>
+
             </div>
+
         </div>
 
         <div class="table-responsive">
+
             <table class="table table-hover align-middle">
+
                 <thead class="table-dark">
-                    <tr>
-                        <th>Mã chuyến</th>
-                        <th>Tuyến</th>
-                        <th>Xe</th>
-                        <th>Khởi hành</th>
-                        <th>Đến dự kiến</th>
-                        <th>Trạng thái</th>
-                        <th class="text-center">Hành động</th>
-                    </tr>
+
+                <tr>
+                    <th>Mã chuyến</th>
+                    <th>Tuyến</th>
+                    <th>Xe</th>
+                    <th>Khởi hành</th>
+                    <th>Đến dự kiến</th>
+                    <th>Trạng thái</th>
+                    <th class="text-center">Hành động</th>
+                </tr>
+
                 </thead>
+
                 <tbody>
-                    <tr th:each="c : ${danhSach}">
-                        <td class="fw-bold" th:text="${c.maChuyen}"></td>
-                        <td th:text="${c.maTuyen}"></td>
-                        <td th:text="${c.maXe}"></td>
-                        <td th:text="${c.gioKhoiHanh}"></td>
-                        <td th:text="${c.gioDenDuKien}"></td>
-                        <td>
-                            <span class="badge bg-info text-dark" th:text="${c.trangThaiChuyen}"></span>
-                        </td>
-                        <td class="text-center">
-                            <a th:href="@{/chuyen/chi-tiet/{ma}(ma=${c.maChuyen})}" class="btn btn-outline-info btn-sm">
-                                <i class="fa-solid fa-eye"></i>
-                            </a>
-                            <a sec:authorize="hasAnyRole('ROLE_QuanLy', 'ROLE_QuanTriVien')"
-                               th:href="@{/chuyen/sua/{ma}(ma=${c.maChuyen})}" class="btn btn-outline-warning btn-sm">
-                                <i class="fa-solid fa-pen"></i>
-                            </a>
-                            <a sec:authorize="hasAnyRole('ROLE_QuanLy', 'ROLE_QuanTriVien')"
-                               th:href="@{/chuyen/xoa/{ma}(ma=${c.maChuyen})}" 
-                               class="btn btn-outline-danger btn-sm"
-                               onclick="return confirm('Xác nhận xoá chuyến này?')">
-                                <i class="fa-solid fa-trash"></i>
-                            </a>
-                        </td>
-                    </tr>
+
+                <tr th:each="c : ${danhSach}">
+
+                    <td class="fw-bold" th:text="${c.maChuyen}"></td>
+
+                    <td th:text="${c.maTuyen}"></td>
+
+                    <td th:text="${c.maXe}"></td>
+
+                    <td th:text="${c.gioKhoiHanh}"></td>
+
+                    <td th:text="${c.gioDenDuKien}"></td>
+
+                    <td>
+                        <span class="badge bg-info text-dark"
+                              th:text="${c.trangThaiChuyen}">
+                        </span>
+                    </td>
+
+                    <td class="text-center">
+
+                        <!-- Chi tiết -->
+
+                        <a th:attr="hx-get=@{/chuyen/chi-tiet/{ma}(ma=${c.maChuyen})}"
+                           hx-target="#main-display"
+                           hx-swap="innerHTML"
+                           class="btn btn-outline-info btn-sm">
+
+                            <i class="fa-solid fa-eye"></i>
+
+                        </a>
+
+                        <!-- Sửa -->
+
+                        <a sec:authorize="hasAnyRole('ROLE_QuanLy','ROLE_QuanTriVien')"
+                           th:attr="hx-get=@{/chuyen/sua/{ma}(ma=${c.maChuyen})}"
+                           hx-target="#main-display"
+                           hx-swap="innerHTML"
+                           class="btn btn-outline-warning btn-sm">
+
+                            <i class="fa-solid fa-pen"></i>
+
+                        </a>
+
+                        <!-- Xóa -->
+
+                        <a sec:authorize="hasAnyRole('ROLE_QuanLy','ROLE_QuanTriVien')"
+                           th:attr="hx-get=@{/chuyen/xoa/{ma}(ma=${c.maChuyen})}"
+                           hx-target="#main-display"
+                           hx-swap="innerHTML"
+                           onclick="return confirm('Xác nhận xoá chuyến này?')"
+                           class="btn btn-outline-danger btn-sm">
+
+                            <i class="fa-solid fa-trash"></i>
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
                 </tbody>
+
             </table>
+
         </div>
+
     </div>
 </div>
 
 </body>
+
 </html>

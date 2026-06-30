@@ -208,19 +208,6 @@ INSERT INTO dbo.Ve (MaVe, MaLoaiVe, MaKH, MaTuyen, NgayMua, NgayBatDau, NgayHetH
 VALUES ('V005','VL03','KH002','T003',GETDATE(),NULL,NULL,N'Đã huỷ');
 GO
 
--- 13) THANHTOAN
-IF NOT EXISTS (SELECT 1 FROM dbo.ThanhToan WHERE MaThanhToan='TT001')
-INSERT INTO dbo.ThanhToan (MaThanhToan, MaVe, NgayThanhToan, SoTien, PhuongThuc, TrangThaiThanhToan)
-VALUES ('TT001','V001',GETDATE(),5000,N'Tiền mặt',N'Thành công');
-
-IF NOT EXISTS (SELECT 1 FROM dbo.ThanhToan WHERE MaThanhToan='TT002')
-INSERT INTO dbo.ThanhToan (MaThanhToan, MaVe, NgayThanhToan, SoTien, PhuongThuc, TrangThaiThanhToan)
-VALUES ('TT002','V003',GETDATE(),3000,N'Chuyển khoản',N'Thành công');
-
-IF NOT EXISTS (SELECT 1 FROM dbo.ThanhToan WHERE MaThanhToan='TT003')
-INSERT INTO dbo.ThanhToan (MaThanhToan, MaVe, NgayThanhToan, SoTien, PhuongThuc, TrangThaiThanhToan)
-VALUES ('TT003','V004',GETDATE(),120000,N'Ví điện tử',N'Thành công');
-GO
 
 -- QUICK SUMMARY
 SELECT 'TuyenXe' AS TableName, COUNT(*) AS TotalRows FROM dbo.TuyenXe

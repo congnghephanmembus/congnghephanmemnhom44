@@ -1,51 +1,226 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <title>Chi tiết tuyến xe</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
     <style>
-        body { background-color: #f4f7f6; }
-        .station-card { border-radius: 12px; border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .list-group-item { border: none; border-bottom: 1px solid #eee; padding: 1.2rem; transition: 0.2s; }
-        .list-group-item:hover { background-color: #f9f9f9; }
-        .btn-view { font-size: 0.85rem; border-radius: 20px; }
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+            border-radius: 1rem;
+        }
+
+        .table th {
+            width: 35%;
+            color: #6c757d;
+            font-weight: 600;
+        }
+
+        .btn-action {
+            transition: .2s;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+        }
+
+        .station-card {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .list-group-item {
+            border: none;
+            border-bottom: 1px solid #eee;
+            padding: 1.2rem;
+            transition: 0.2s;
+        }
+
+        .list-group-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .btn-view {
+            font-size: 0.85rem;
+            border-radius: 20px;
+        }
     </style>
 </head>
+
 <body>
 
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="text-dark fw-bold"><i class="fa fa-route text-primary"></i> Lộ trình trạm</h2>
-        <a href="/tuyen" class="btn btn-outline-secondary"><i class="fa fa-arrow-left"></i> Quay lại</a>
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-8">
+
+            <div class="card p-4">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+
+                    <h3 class="mb-0">
+                        <i class="fa-solid fa-route text-primary"></i>
+                        Chi tiết tuyến xe
+                    </h3>
+
+                    <!-- Quay lại -->
+                    <a
+                        hx-get="/tuyen"
+                        hx-target="#main-display"
+                        hx-swap="innerHTML"
+                        class="btn btn-outline-secondary">
+
+                        <i class="fa-solid fa-arrow-left"></i>
+                        Quay lại
+
+                    </a>
+
+                </div>
+
+                <!-- Thông tin tuyến -->
+                <table class="table table-borderless align-middle">
+
+                    <tr>
+                        <th><i class="fa-solid fa-barcode me-2"></i>Mã tuyến</th>
+                        <td class="fw-bold" th:text="${tuyenXe.maTuyen}"></td>
+                    </tr>
+
+                    <tr>
+                        <th><i class="fa-solid fa-route me-2"></i>Tên tuyến</th>
+                        <td th:text="${tuyenXe.tenTuyen}"></td>
+                    </tr>
+
+                    <tr>
+                        <th><i class="fa-solid fa-map-pin me-2"></i>Điểm đầu</th>
+                        <td th:text="${tuyenXe.diemDau}"></td>
+                    </tr>
+
+                    <tr>
+                        <th><i class="fa-solid fa-map-pin me-2"></i>Điểm cuối</th>
+                        <td th:text="${tuyenXe.diemCuoi}"></td>
+                    </tr>
+
+                    <tr>
+                        <th><i class="fa-solid fa-road me-2"></i>Cự ly</th>
+                        <td th:text="${tuyenXe.cuLy + ' km'}"></td>
+                    </tr>
+
+                    <tr>
+                        <th><i class="fa-solid fa-info-circle me-2"></i>Trạng thái</th>
+                        <td>
+                            <span class="badge"
+                                  th:classappend="${tuyenXe.trangThai == 'Hoạt động' ? 'bg-success' : 'bg-secondary'}"
+                                  th:text="${tuyenXe.trangThai}">
+                            </span>
+                        </td>
+                    </tr>
+
+                </table>
+
+                <hr class="my-4">
+
+                <h5 class="mb-3">
+                    <i class="fa-solid fa-map-location-dot text-primary"></i>
+                    Lộ trình các trạm
+                </h5>
+
+                <div class="card station-card p-3">
+                    <ul class="list-group list-group-flush">
+                        <th:block th:each="tram : ${dsTram}">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fa-solid fa-map-marker-alt text-danger me-3"></i>
+                                    <span class="fw-bold fs-5" th:text="${tram.tenTram}">Tên trạm</span>
+                                </div>
+                                <button class="btn btn-outline-primary btn-view"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        th:data-bs-target="'#tram' + ${tram.maTram}">
+                                    <i class="fa-solid fa-info-circle"></i> Chi tiết
+                                </button>
+                            </li>
+
+                            <div th:id="'tram' + ${tram.maTram}" class="collapse">
+                                <div class="card card-body bg-light m-3 border-0">
+                                    <p class="mb-1"><small class="text-muted text-uppercase">Địa chỉ cụ thể:</small></p>
+                                    <p class="mb-0 fs-6">
+                                        <i class="fa-solid fa-location-dot me-2 text-secondary"></i>
+                                        <span th:text="${tram.diaChi}">Địa chỉ trạm</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </th:block>
+                    </ul>
+                </div>
+
+                <hr class="my-4">
+
+                <div class="d-flex gap-2 justify-content-end">
+
+                    <!-- Xem lịch chạy -->
+                    <a th:attr="hx-get=@{/lich/tuyen/{ma}(ma=${tuyenXe.maTuyen})}"
+                       hx-target="#main-display"
+                       hx-swap="innerHTML"
+                       class="btn btn-info text-white btn-action">
+
+                        <i class="fa-solid fa-calendar-days"></i>
+                        Xem lịch chạy
+
+                    </a>
+
+                    <div sec:authorize="hasAnyRole('ROLE_QuanLy','ROLE_QuanTriVien')">
+
+                        <!-- Sửa -->
+                        <a
+                            th:attr="hx-get=@{/tuyen/sua/{ma}(ma=${tuyenXe.maTuyen})}"
+                            hx-target="#main-display"
+                            hx-swap="innerHTML"
+                            class="btn btn-warning btn-action">
+
+                            <i class="fa-solid fa-pen-to-square"></i>
+                            Sửa
+
+                        </a>
+
+                        <!-- Xóa -->
+                        <a sec:authorize="hasRole('ROLE_QuanTriVien')"
+                            th:attr="hx-get=@{/tuyen/xoa/{ma}(ma=${tuyenXe.maTuyen})}"
+                            hx-target="#main-display"
+                            hx-swap="innerHTML"
+                            class="btn btn-danger btn-action"
+                            onclick="return confirm('Xác nhận xoá tuyến xe này?')">
+
+                            <i class="fa-solid fa-trash"></i>
+                            Xoá
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
-    <div class="card station-card p-3">
-        <ul class="list-group list-group-flush">
-            <th:block th:each="tram : ${dsTram}">
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <div>
-                        <i class="fa fa-map-marker-alt text-danger me-3"></i>
-                        <span class="fw-bold fs-5" th:text="${tram.tenTram}">Tên trạm</span>
-                    </div>
-                    <button class="btn btn-outline-primary btn-view" 
-                            type="button" 
-                            data-bs-toggle="collapse" 
-                            th:data-bs-target="'#tram' + ${tram.maTram}">
-                        <i class="fa fa-info-circle"></i> Chi tiết
-                    </button>
-                </li>
-                
-                <div th:id="'tram' + ${tram.maTram}" class="collapse">
-                    <div class="card card-body bg-light m-3 border-0">
-                        <p class="mb-1"><small class="text-muted text-uppercase">Địa chỉ cụ thể:</small></p>
-                        <p class="mb-0 fs-6"><i class="fa fa-location-dot me-2 text-secondary"></i><span th:text="${tram.diaChi}">Địa chỉ trạm</span></p>
-                    </div>
-                </div>
-            </th:block>
-        </ul>
-    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
