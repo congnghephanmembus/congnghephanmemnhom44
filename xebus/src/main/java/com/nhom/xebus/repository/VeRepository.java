@@ -24,4 +24,12 @@ public interface VeRepository extends JpaRepository<Ve, String> {
     // TÍNH TỔNG DOANH THU THEO KHOẢNG THỜI GIAN
     @Query("SELECT SUM(l.donGia) FROM Ve v JOIN LoaiVe l ON v.maLoaiVe = l.maLoaiVe WHERE v.ngayMua BETWEEN :startDate AND :endDate")
     BigDecimal tinhTongDoanhThuTheoNgay(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+
+// Đếm tổng số vé
+    @Query("SELECT COUNT(v) FROM Ve v")
+    long demTongSoVe();
+
+    // Tính doanh thu trong tuần (7 ngày gần nhất)
+    @Query("SELECT SUM(l.donGia) FROM Ve v JOIN LoaiVe l ON v.maLoaiVe = l.maLoaiVe WHERE v.ngayMua >= :startDate")
+    BigDecimal tinhTongDoanhThuTuan(@Param("startDate") LocalDateTime startDate);
 }

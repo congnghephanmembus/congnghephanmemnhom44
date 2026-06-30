@@ -1,8 +1,13 @@
 package com.nhom.xebus.service;
 
+import com.nhom.xebus.dto.PagingResponse;
 import com.nhom.xebus.entity.TuyenXe;
 import com.nhom.xebus.repository.TuyenXeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,6 +36,21 @@ public class TuyenXeService {
 
     public void xoa(String maTuyen) {
         tuyenXeRepository.deleteById(maTuyen);
+    }
+
+    // =========================
+    // PHÂN TRANG
+    // =========================
+    public PagingResponse<TuyenXe> layPhanTrang(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("maTuyen").ascending());
+        Page<TuyenXe> pageResult = tuyenXeRepository.findAll(pageable);
+
+        return PagingResponse.of(
+                pageResult.getContent(),
+                pageResult.getNumber(),
+                pageResult.getSize(),
+                pageResult.getTotalElements()
+        );
     }
 
     // =========================

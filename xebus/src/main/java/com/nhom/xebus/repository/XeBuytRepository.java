@@ -11,4 +11,8 @@ public interface XeBuytRepository extends JpaRepository<XeBuyt, String> {
     // Lấy mã xe lớn nhất
     @Query("SELECT MAX(x.maXe) FROM XeBuyt x")
     String findMaxMaXe();
+
+    // Đếm xe đang bảo trì
+    @Query("SELECT COUNT(x) FROM XeBuyt x WHERE x.trangThai = 'Bảo trì'")
+    long demXeDangBaoTri();
 }

@@ -29,7 +29,7 @@ public class XeBuytService {
         xeBuytRepository.deleteById(maXe);
     }
 
-    // =========================
+// =========================
     // SINH MÃ XE TỰ ĐỘNG
     // =========================
     public String sinhMaXe() {
@@ -50,5 +50,10 @@ public class XeBuytService {
         } catch (NumberFormatException e) {
             return "XE001";
         }
+    }
+
+    // Đếm xe đang bảo trì
+    public long demXeDangBaoTri() {
+        return xeBuytRepository.demXeDangBaoTri();
     }
 }

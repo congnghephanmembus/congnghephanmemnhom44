@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class NhatKyService {
@@ -81,9 +82,14 @@ public class NhatKyService {
             repository.save(log);
             System.out.println("===== NHAT KY - Da luu log thanh cong");
 
-        } catch (Exception e) {
+} catch (Exception e) {
             System.out.println("===== NHAT KY - LOI: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    // Lấy các hoạt động gần đây cho trang chủ
+    public List<NhatKyHeThong> layHoatDongGanDay() {
+        return repository.layHoatDongGanDay();
     }
 }
